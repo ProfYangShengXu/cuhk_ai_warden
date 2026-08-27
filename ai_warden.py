@@ -5,6 +5,7 @@
   python ai_warden.py bb      # 扫描 BB 通知
   python ai_warden.py mail    # 扫描 QQ 邮箱
   python ai_warden.py all     # 全跑
+  python ai_warden.py download CSC3150 review  # 下载课程文件
 """
 import sys, os, subprocess
 
@@ -29,6 +30,12 @@ def main():
         print("配置" + ("完整 ✓" if ok else "不完整，请检查 .env"))
     elif cmd in ("bb", "mail"):
         subprocess.run([py, os.path.join(SCRIPTS, cmd + "_scan.py")])
+    elif cmd == "download":
+        args = sys.argv[2:]  # 课程关键词 [文件关键词]
+        if not args:
+            print("用法: python ai_warden.py download <课程关键词> [文件关键词]")
+        else:
+            subprocess.run([py, os.path.join(SCRIPTS, "download.py")] + args)
     elif cmd == "all":
         for c in ("bb", "mail"):
             subprocess.run([py, os.path.join(SCRIPTS, c + "_scan.py")])
